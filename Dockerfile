@@ -58,8 +58,9 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/
-RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
-    tar xf apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
+# RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
+COPY apache-tomcat/apache-tomcat-${TOMCAT_VERSION}.tar.gz /opt/
+RUN tar xf apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
     rm apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
     rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/ROOT && \
     rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/docs && \
@@ -68,8 +69,9 @@ RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/b
 WORKDIR /tmp
 
 # install geoserver
-RUN wget -q -O /tmp/geoserver.zip $WAR_ZIP_URL && \
-    unzip geoserver.zip geoserver.war -d $CATALINA_HOME/webapps && \
+# RUN wget -q -O /tmp/geoserver.zip $WAR_ZIP_URL && \
+COPY geoserver/geoserver-$GEOSERVER_VERSION-war.zip /tmp/geoserver.zip
+RUN unzip geoserver.zip geoserver.war -d $CATALINA_HOME/webapps && \
     mkdir -p $CATALINA_HOME/webapps/geoserver && \
     unzip -q $CATALINA_HOME/webapps/geoserver.war -d $CATALINA_HOME/webapps/geoserver && \
     rm $CATALINA_HOME/webapps/geoserver.war && \
